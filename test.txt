@@ -1,0 +1,5 @@
+Percentage of each label in the test.csv:
+Label
+Benign            60.0
+FTP-BruteForce    22.0
+SSH-Bruteforce    18.0

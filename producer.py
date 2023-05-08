@@ -3,7 +3,7 @@ import time
 from kafka import KafkaProducer
 import json
 
-data_path = "/home/yhz/Downloads/02-14-2018.csv"
+data_path = "/home/yhz/6895/test.csv"
 data = pd.read_csv(data_path)
 
 # print("finish reading.")
