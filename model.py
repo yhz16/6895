@@ -56,7 +56,7 @@ model.add(Dense(num_classes, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Train the model
-history = model.fit(X_train, y_train, epochs=1, batch_size=32, validation_split=0.1, verbose=1)
+history = model.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.1, verbose=1)
 
 # Evaluate the model
 y_pred_probs = model.predict(X_test)
