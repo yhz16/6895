@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDS Events</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .anomaly {
+            background-color: #fdd;
+        }
+    </style>
+    <script>
+        async function fetchData() {
+            const response = await fetch('/events');
+            const rawData = await response.text(); // Get the raw text data
+            console.log('Raw data:', rawData); // Log the raw data
+            
+            if (!rawData.trim()) {
+                console.error('No data received.');
+                return;
+            }
+
+            let data;
+            try {
+                data = JSON.parse(rawData);
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                return;
+            }
+
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tr = document.createElement('tr');
+
+            // Add table headers for each key in the first event
+            for (const key in data[0]) {
+                const th = document.createElement('th');
+                th.textContent = key;
+                tr.appendChild(th);
+            }
+            thead.appendChild(tr);
+            table.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+            for (const event of data) {
+                const tr = document.createElement('tr');
+                if (event.prediction !== 'Benign') {
+                    tr.classList.add('anomaly');
+                }
+
+                for (const key in event) {
+                    const td = document.createElement('td');
+                    td.textContent = event[key];
+                    tr.appendChild(td);
+                }
+
+                tbody.appendChild(tr);
+            }
+            table.appendChild(tbody);
+
+            document.getElementById('container').appendChild(table);
+        }
+
+        window.addEventListener('load', fetchData);
+    </script>
+    <script type="text/javascript">
+        setTimeout(function(){
+          location = ''
+        },10000)
+      </script>
+</head>
+<body>
+    <div id="container"></div>
+</body>
+</html>
