@@ -8,82 +8,54 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
     $(document).ready(function() {
-        $.get('/events', function(data) {
-            console.log('Data:', data);
+        function fetchData() {
+            $.get('/events', function(data) {
+                console.log('Data:', data);
 
-            if (!data) {
-                console.error('No data received.');
-                return;
-            }
-
-            // const $table = $('<table></table>');
-            // const $thead = $('<thead></thead>');
-            // const $tr = $('<tr></tr>');
-            
-            // const $table = $('#y-table');
-            // const $thead = $('#y-head');
-            // const $thtr = $('#yh-tr');
-
-            // Add table headers for each key in the first event
-            // for (const key in data[0]) {
-            //     const $th = $('<th></th>').text(key);
-            //     $tr.append($th);
-            // }
-            // $thead.append($thtr);
-            // $table.append($thead);
-
-            // const $tbody = $('<tbody></tbody>');
-            // for (const event of data) {
-            //     const $tr = $('<tr></tr>');
-            //     if (event.prediction !== 'Benign') {
-            //         $tr.addClass('anomaly');
-            //     }
-
-            //     for (const key in event) {
-            //         const $td = $('<td></td>').text(event[key]);
-            //         $tr.append($td);
-            //     }
-
-            //     $tbody.append($tr);
-            // }
-            // $table.append($tbody);
-
-            // $('#container').append($table);
-        
-            const $tbody = $('#y-body');
-            for (const event of data) {
-                const $tr = $('<tr></tr>');
-                if (event.Prediction !== 'Benign') {
-                    $tr.addClass('anomaly');
+                if (!data) {
+                    console.error('No data received.');
+                    return;
                 }
+            
+                const $tbody = $('#y-body');
+                for (const event of data) {
+                    const $tr = $('<tr></tr>');
+                    if (event.Prediction !== 'Benign') {
+                        $tr.addClass('anomaly');
+                    }
 
-                const $td1 = $('<td></td>').html(event['event']['Timestamp']);
-                const $td2 = $('<td></td>').html(event['event']['Dst Port']);
-                const $td3 = $('<td></td>').html(event['event']['Protocol']);
-                const $td4 = $('<td></td>').html(event['Prediction']);
-                $tr.append($td1);
-                $tr.append($td2);
-                $tr.append($td3);
-                $tr.append($td4);
+                    const $td1 = $('<td></td>').html(event['event']['Timestamp']);
+                    const $td2 = $('<td></td>').html(event['event']['Dst Port']);
+                    const $td3 = $('<td></td>').html(event['event']['Protocol']);
+                    const $td4 = $('<td></td>').html(event['Prediction']);
+                    $tr.append($td1);
+                    $tr.append($td2);
+                    $tr.append($td3);
+                    $tr.append($td4);
 
-                $tbody.append($tr);
-            }
-            // $table.append($tbody);
+                    $tbody.append($tr);
+                }
+            });
+        }
 
-            // $('#container').append($table);
-        });
+        // Fetch data immediately
+        fetchData();
+        // Then fetch data every 10 seconds
+        setInterval(fetchData, 5000);
     });
     </script>
 
-    <script type="text/javascript">
+
+    <!-- <script type="text/javascript">
         setTimeout(function(){
             location = ''
         },10000)
-    </script>
+    </script> -->
 </head>
 
 <body>
     <div id="container">
+        <h1>Insider Threats Detection System</h2>
         <table id="y-table">
             <thead id="y-head">
                 <tr id="yh-tr">
@@ -94,18 +66,20 @@
                 </tr>
             </thead>
             <tbody id="y-body">
-                <!-- <tr id="yb-tr"> -->
-                    <!-- <td id="yb-td">The table body</td>
-                    <td>with two columns</td> -->
-                <!-- </tr> -->
             </tbody>
         </table>
     </div>
 </body>
 
 <style>
+    h1 {
+        margin-top: 5vh;
+        text-align: center;
+    }
     table {
-        width: 100%;
+        margin-top: 5vh;
+        width: 80vw;
+        margin-left: 10vw;
         border-collapse: collapse;
     }
     th, td {

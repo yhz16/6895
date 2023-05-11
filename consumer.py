@@ -25,7 +25,7 @@ def get_events():
     event_data = []
     try:
         i = 0
-        counter = 10  # Change this value to control the number of events you want to process
+        counter = 5  # Change this value to control the number of events you want to process
 
         while counter > 0:
             msg_pack = consumer.poll(timeout_ms=1000)
