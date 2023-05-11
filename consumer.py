@@ -60,7 +60,7 @@ def get_events():
 
                     result = {
                         'event': message.value,
-                        'prediction': le.inverse_transform(y_pred)[0]
+                        'Prediction': le.inverse_transform(y_pred)[0]
                     }
 
                     event_data.append(result)

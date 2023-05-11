@@ -4,84 +4,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IDS Events</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .anomaly {
-            background-color: #fdd;
-        }
-    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        async function fetchData() {
-            const response = await fetch('/events');
-            const rawData = await response.text(); // Get the raw text data
-            console.log('Raw data:', rawData); // Log the raw data
-            
-            if (!rawData.trim()) {
+    $(document).ready(function() {
+        $.get('/events', function(data) {
+            console.log('Data:', data);
+
+            if (!data) {
                 console.error('No data received.');
                 return;
             }
 
-            let data;
-            try {
-                data = JSON.parse(rawData);
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
-                return;
-            }
-
-            const table = document.createElement('table');
-            const thead = document.createElement('thead');
-            const tr = document.createElement('tr');
+            // const $table = $('<table></table>');
+            // const $thead = $('<thead></thead>');
+            // const $tr = $('<tr></tr>');
+            
+            // const $table = $('#y-table');
+            // const $thead = $('#y-head');
+            // const $thtr = $('#yh-tr');
 
             // Add table headers for each key in the first event
-            for (const key in data[0]) {
-                const th = document.createElement('th');
-                th.textContent = key;
-                tr.appendChild(th);
-            }
-            thead.appendChild(tr);
-            table.appendChild(thead);
+            // for (const key in data[0]) {
+            //     const $th = $('<th></th>').text(key);
+            //     $tr.append($th);
+            // }
+            // $thead.append($thtr);
+            // $table.append($thead);
 
-            const tbody = document.createElement('tbody');
+            // const $tbody = $('<tbody></tbody>');
+            // for (const event of data) {
+            //     const $tr = $('<tr></tr>');
+            //     if (event.prediction !== 'Benign') {
+            //         $tr.addClass('anomaly');
+            //     }
+
+            //     for (const key in event) {
+            //         const $td = $('<td></td>').text(event[key]);
+            //         $tr.append($td);
+            //     }
+
+            //     $tbody.append($tr);
+            // }
+            // $table.append($tbody);
+
+            // $('#container').append($table);
+        
+            const $tbody = $('#y-body');
             for (const event of data) {
-                const tr = document.createElement('tr');
-                if (event.prediction !== 'Benign') {
-                    tr.classList.add('anomaly');
+                const $tr = $('<tr></tr>');
+                if (event.Prediction !== 'Benign') {
+                    $tr.addClass('anomaly');
                 }
 
-                for (const key in event) {
-                    const td = document.createElement('td');
-                    td.textContent = event[key];
-                    tr.appendChild(td);
-                }
+                const $td1 = $('<td></td>').html(event['event']['Timestamp']);
+                const $td2 = $('<td></td>').html(event['event']['Dst Port']);
+                const $td3 = $('<td></td>').html(event['event']['Protocol']);
+                const $td4 = $('<td></td>').html(event['Prediction']);
+                $tr.append($td1);
+                $tr.append($td2);
+                $tr.append($td3);
+                $tr.append($td4);
 
-                tbody.appendChild(tr);
+                $tbody.append($tr);
             }
-            table.appendChild(tbody);
+            // $table.append($tbody);
 
-            document.getElementById('container').appendChild(table);
-        }
-
-        window.addEventListener('load', fetchData);
+            // $('#container').append($table);
+        });
+    });
     </script>
+
     <script type="text/javascript">
         setTimeout(function(){
-          location = ''
+            location = ''
         },10000)
-      </script>
+    </script>
 </head>
+
 <body>
-    <div id="container"></div>
+    <div id="container">
+        <table id="y-table">
+            <thead id="y-head">
+                <tr id="yh-tr">
+                    <th>Timestamp</th>
+                    <th>Dst Port</th>
+                    <th>Protocol</th>
+                    <th>Prediction</th>
+                </tr>
+            </thead>
+            <tbody id="y-body">
+                <!-- <tr id="yb-tr"> -->
+                    <!-- <td id="yb-td">The table body</td>
+                    <td>with two columns</td> -->
+                <!-- </tr> -->
+            </tbody>
+        </table>
+    </div>
 </body>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .anomaly {
+        background-color: #fdd;
+    }
+</style>
 </html>
