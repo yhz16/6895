@@ -16,6 +16,6 @@ for index, row in data.iterrows():
     producer.send('ids', event)
     print(f"sent", i)
     i += 1
-    time.sleep(0.5)
+    time.sleep(1)
 
 producer.close()

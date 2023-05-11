@@ -19,7 +19,12 @@
             
                 const $tbody = $('#y-body');
                 for (const event of data) {
-                    const $tr = $('<tr></tr>');
+                    // const $tr = $('<tr></tr>');
+                    const $tr = $('<tr></tr>').click(function() {
+                        $('tr').removeClass('highlight'); // Remove the highlight class from all rows
+                        $(this).addClass('highlight'); 
+                        $('#details-content').html('<pre>' + JSON.stringify(event, null, 2) + '</pre>');
+                    });
                     if (event.Prediction !== 'Benign') {
                         $tr.addClass('anomaly');
                     }
@@ -28,10 +33,18 @@
                     const $td2 = $('<td></td>').html(event['event']['Dst Port']);
                     const $td3 = $('<td></td>').html(event['event']['Protocol']);
                     const $td4 = $('<td></td>').html(event['Prediction']);
+                    // const $td5 = $('<td></td>');
+
+                    // const $button = $('<button></button>').text('Display').click(function() {
+                    //     $('#details').html(JSON.stringify(event, null, 2));
+                    // });
+                    // $td5.append($button);
+
                     $tr.append($td1);
                     $tr.append($td2);
                     $tr.append($td3);
                     $tr.append($td4);
+                    // $tr.append($td5);
 
                     $tbody.append($tr);
                 }
@@ -41,46 +54,59 @@
         // Fetch data immediately
         fetchData();
         // Then fetch data every 10 seconds
-        setInterval(fetchData, 5000);
+        setInterval(fetchData, 1000);
     });
     </script>
 
-
-    <!-- <script type="text/javascript">
-        setTimeout(function(){
-            location = ''
-        },10000)
-    </script> -->
 </head>
 
 <body>
-    <div id="container">
-        <h1>Insider Threats Detection System</h2>
-        <table id="y-table">
-            <thead id="y-head">
-                <tr id="yh-tr">
-                    <th>Timestamp</th>
-                    <th>Dst Port</th>
-                    <th>Protocol</th>
-                    <th>Prediction</th>
-                </tr>
-            </thead>
-            <tbody id="y-body">
-            </tbody>
-        </table>
+    <h1>Insider Threats Detection System</h1>
+    <div id="container" style="height: 80vh; "> 
+        <div id="table-container" style="overflow: auto;">
+            <table id="y-table">
+                <thead id="y-head">
+                    <tr id="yh-tr">
+                        <th>Timestamp</th>
+                        <th>Dst Port</th>
+                        <th>Protocol</th>
+                        <th>Prediction</th>
+                        <!-- <th>Show Details</th> -->
+                    </tr>
+                </thead>
+                <tbody id="y-body">
+                </tbody>
+            </table>
+        </div>
+
+        <div id="details">
+            <div id="show-details">Show Details</div>
+            <div id="details-content"></div>
+        </div>
     </div>
 </body>
 
 <style>
+    #container {
+        display: flex;
+        flex-direction: row;
+    }
+    #show-details {
+        /* margin-top: 0; */
+        padding-top: 1vh;
+        padding-left: 0.5vw;
+        
+        font-weight: bold;
+    }
     h1 {
-        margin-top: 5vh;
+        margin-top: 4vh;
         text-align: center;
+        margin-bottom: 4vh;
     }
     table {
-        margin-top: 5vh;
-        width: 80vw;
-        margin-left: 10vw;
-        border-collapse: collapse;
+        width: 60vw;
+        margin-left: 5vw;
+        border-collapse: separate;
     }
     th, td {
         border: 1px solid black;
@@ -92,6 +118,20 @@
     }
     .anomaly {
         background-color: #fdd;
+    }
+    #details {
+        /* margin-top: 20px;
+        padding: 10px; */
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        height: 80vh; 
+        position: fixed;
+        width: 25vw; 
+        margin-left: 70vw;
+        overflow: auto;
+    }
+    .highlight {
+        outline: 1px solid black;
     }
 </style>
 </html>
