@@ -67,10 +67,10 @@ print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred))
 
 # Save the trained model
-model.save('model.h5')
+model.save('model1.h5')
 
 # Save the LabelEncoder classes
-np.save('labelencoder_classes.npy', le.classes_)
+np.save('labelencoder_classes1.npy', le.classes_)
 
 # Save the MinMaxScaler min_ and scale_ parameters
-np.save('minmax_scaler_params.npy', [scaler.min_, scaler.scale_])
+np.save('minmax_scaler_params1.npy', [scaler.min_, scaler.scale_])
